@@ -1,16 +1,13 @@
-# mymovies
+<h1>🎬 My Movies</h1>
 
-A new Flutter project.
+<p>Seus filmes preferidos em um só lugar.</p>
 
-## Getting Started
+<h2>⚙️ Tecnologias utilizadas</h2>
 
-This project is a starting point for a Flutter application.
+- Flutter
+- Consumo de API do IMDb
+- Persistência de dados com SQLite
 
-A few resources to get you started if this is your first Flutter project:
+<h2>🔨 Processo de Desenvolvimento</h2>
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<h2>📱 Resultado Final</h2>
