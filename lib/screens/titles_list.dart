@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:mymovies/http/webservice.dart';
+import 'package:mymovies/screens/titles_profile.dart';
 
-class Movies extends StatelessWidget {
-  Movies({Key? key}) : super(key: key);
-  final String _screenTitle = 'Movies';
+class TitlesList extends StatelessWidget {
+  TitlesList(this.screenTitle, this._titlesList, {Key? key}) : super(key: key);
+  final String screenTitle;
+  final List<String> _titlesList;
   final _getData = GetDataFromAPI();
-  final List<String> _moviesImdbId = ['tt1659337', 'tt10872600', 'tt8579674'];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_screenTitle),
+        title: Text(screenTitle),
       ),
       body: FutureBuilder(
-          future: _getData.fetchTitlesPosters(_moviesImdbId),
+          future: _getData.fetchTitles(_titlesList),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
@@ -32,7 +33,10 @@ class Movies extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
                       CircularProgressIndicator(),
-                      Text('Loading')
+                      Padding(
+                        padding: EdgeInsets.only(top: 8.0),
+                        child: Text('Loading'),
+                      )
                     ],
                   ),
                 );
@@ -46,19 +50,28 @@ class Movies extends StatelessWidget {
                   ),
                 );
               case ConnectionState.done:
-                final List<String> posters = snapshot.data as List<String>;
+                final List<Map<String, dynamic>> titles = snapshot.data as List<Map<String, dynamic>>;
                 return ListView.builder(
+                  scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
                           width: 120,
-                          height: 190,
-                          child: Image.network(posters[index])
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) => TitleProfile(titles[index]['Title'], titles[index]['Ratings'][0]['Value'])
+                                  )
+                              );
+                            },
+                            child: Image.network(titles[index]['Poster']),
+                          )
                       ),
                     );
                   },
-                  itemCount: posters.length,
+                  itemCount: titles.length,
                 );
             }
           }),

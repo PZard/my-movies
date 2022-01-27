@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
-import 'series.dart';
-import 'movies.dart';
+import 'titles_list.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
-  final String _screenTitle = 'MyMovies';
+  HomePage({Key? key}) : super(key: key);
+  final String screenTitle = 'MyMovies';
+  final List<String> _moviesImdbId = ['tt1659337', 'tt10872600', 'tt8579674'];
+  final List<String> _seriesImdbId = ['tt7134908', 'tt1442437', 'tt8772296'];
 
-  void _navigateMoviesPage (BuildContext context) {
+  void _navigateTitlesPage (BuildContext context, String screenName, List<String> listOfTitle) {
     Navigator.of(context).push(
       MaterialPageRoute(
-          builder: (context) => Movies()
+          builder: (context) => TitlesList(screenName, listOfTitle)
       )
-    );
-  }
-  void _navigateSeriesPage (BuildContext context) {
-    Navigator.of(context).push(
-        MaterialPageRoute(
-            builder: (context) => Series()
-        )
     );
   }
 
@@ -25,7 +19,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_screenTitle),
+        title: Text(screenTitle),
       ),
       body: Column(
         children: [
@@ -34,8 +28,8 @@ class HomePage extends StatelessWidget {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
-                _HomePageButton('Movies', Icons.movie, navigation: () => _navigateMoviesPage(context)),
-                _HomePageButton('TV Series', Icons.tv, navigation: () => _navigateSeriesPage(context))
+                _HomePageButton('Movies', Icons.movie, navigation: () => _navigateTitlesPage(context, 'Movies', _moviesImdbId)),
+                _HomePageButton('TV Series', Icons.tv, navigation: () => _navigateTitlesPage(context, 'TV Series', _seriesImdbId))
               ],
             ),
           )
@@ -55,31 +49,32 @@ class _HomePageButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Material(
-        color: Theme.of(context).colorScheme.primary,
-        child: InkWell(
-          onTap: () => navigation(),
-          child: Container(
-            padding: const EdgeInsets.all(8.0),
-            width: 150,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  icon,
-                  color: Colors.white,
+      child: InkWell(
+        onTap: () => navigation(),
+        child: Container(
+          padding: const EdgeInsets.all(8.0),
+          width: 150,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                icon,
+                color: Colors.white,
+              ),
+              Text(
+                name,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w600
                 ),
-                Text(
-                  name,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.w600
-                  ),
-                )
-              ],
-            ),
+              )
+            ],
           ),
         ),
       ),
